@@ -1,0 +1,18 @@
+{
+  "provider": {
+    "kind": "openai",
+    "baseUrl": "https://api.deepseek.com/v1",
+    "model": "deepseek-chat"
+  },
+  "budget": {
+    "contextWindow": 200000,
+    "reserveForReply": 16384,
+    "maxOutputTokens": 8192
+  },
+  "sandbox": {
+    "enabled": true,
+    "allowNetwork": false
+  },
+  "logPath": "agentforge.log",
+  "sessionId": "default"
+}
