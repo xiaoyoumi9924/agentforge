@@ -2,42 +2,42 @@
 
 一门课，12 讲，从一副空骨架到一个能读代码、改代码、执行代码，还带桌面端和浏览器端的 AI Agent。
 
-![浏览器端](text/08-web-ui/images/web-main.png)
+![浏览器端](03-text/08-web-ui/images/web-main.png)
 
 ## 这是什么
 
 三样东西放在一起：
 
-- **课程**（`course/`）—— 12 讲的原始课件，以及每一讲的源码，全是老师给的那份，未做改写
-- **实现**（`agentforge/`）—— 跟着这 12 讲做出来的完整工程，clone 下来就能编译
-- **作业**（`text/`）—— 大作业原文（十个题目）+ 我们选的第八个：给 Agent 加一个浏览器前端
+- **课程**（`01-course/`）—— 12 讲的原始课件，以及每一讲的源码，全是老师给的那份，未做改写
+- **实现**（`02-agentforge/`）—— 跟着这 12 讲做出来的完整工程，clone 下来就能编译
+- **作业**（`03-text/`）—— 大作业原文（十个题目）+ 我们选的第八个：给 Agent 加一个浏览器前端
 
 ## 从这里开始
 
 | 你有多少时间 | 从哪进 |
 |---|---|
-| **5 分钟** | `cd agentforge && ./scripts/build.ps1`，先看成品 |
-| **3 小时** | 从 [`course/code/L01-需求与总体设计`](course/code/L01-需求与总体设计) 顺序读源码 |
-| **只想看题** | [`text/`](text) —— 十道题（[PDF](text/大作业-题目.pdf)），我们选了第八个 |
+| **5 分钟** | `cd 02-agentforge && ./scripts/build.ps1`，先看成品 |
+| **3 小时** | 从 [`01-course/code/L01-需求与总体设计`](01-course/code/L01-需求与总体设计) 顺序读源码 |
+| **只想看题** | [`03-text/`](03-text) —— 十道题（[PDF](03-text/大作业-题目.pdf)），我们选了第八个 |
 
 ## 12 讲
 
 | # | 课件 | 源码 | 这一步做什么 |
 |---|---|---|---|
-| 01 | [pptx](course/courseware/main/L01-需求与总体设计.pptx) | [L01-需求与总体设计](course/code/L01-需求与总体设计) | 定边界：13 个模块、不变量、验收线 |
-| 02 | [pptx](course/courseware/main/L02-模块设计与核心契约.pptx) | [L02-模块设计与核心契约](course/code/L02-模块设计与核心契约) | 冻结接口，写契约自检 |
-| 03 | [pdf](course/courseware/main/L03-v0.pdf) | [L03-v0能对话](course/code/L03-v0能对话) | 第一次流式回答（SSE） |
-| 04 | [pdf](course/courseware/main/L04-v1.pdf) | [L04-v1能读](course/code/L04-v1能读) | 工具调用、C ABI 插件、权限门 |
-| 05 | [pdf](course/courseware/main/L05-v2.pdf) | [L05-v2v3能改能自主循环](course/code/L05-v2v3能改能自主循环) | 自主循环与上下文预算 |
-| 06 | [pdf](course/courseware/main/L06-v4.pdf) | [L06-v4能刹车](course/code/L06-v4能刹车) | 六道闸门、Job Object 沙箱 |
-| 07 | [pdf](course/courseware/main/L07-v5.pdf) | [L07-v5有记忆](course/code/L07-v5有记忆) | 会话持久化与压缩 |
-| 08 | [pdf](course/courseware/main/L08-v6.pdf) | [L08-v6有地图](course/code/L08-v6有地图) | 仓库索引 |
-| 09 | [pdf](course/courseware/main/L09-v7.pdf) | [L09-v7有面目](course/code/L09-v7有面目) | 终端界面 |
-| 10 | [pdf](course/courseware/main/L10-v8.pdf) | [L10-v8能存档](course/code/L10-v8能存档) | 配置与密钥 |
-| 11 | [pdf](course/courseware/main/L11-v9.pdf) | [L11-v9会分身](course/code/L11-v9会分身) | 子代理 |
-| 12 | [pdf](course/courseware/main/L12-v10.pdf) | [L12-v10有仪表盘](course/code/L12-v10有仪表盘) | 评测与交付 |
+| 01 | [pptx](01-course/courseware/main/L01-需求与总体设计.pptx) | [L01-需求与总体设计](01-course/code/L01-需求与总体设计) | 定边界：13 个模块、不变量、验收线 |
+| 02 | [pptx](01-course/courseware/main/L02-模块设计与核心契约.pptx) | [L02-模块设计与核心契约](01-course/code/L02-模块设计与核心契约) | 冻结接口，写契约自检 |
+| 03 | [pdf](01-course/courseware/main/L03-v0.pdf) | [L03-v0能对话](01-course/code/L03-v0能对话) | 第一次流式回答（SSE） |
+| 04 | [pdf](01-course/courseware/main/L04-v1.pdf) | [L04-v1能读](01-course/code/L04-v1能读) | 工具调用、C ABI 插件、权限门 |
+| 05 | [pdf](01-course/courseware/main/L05-v2.pdf) | [L05-v2v3能改能自主循环](01-course/code/L05-v2v3能改能自主循环) | 自主循环与上下文预算 |
+| 06 | [pdf](01-course/courseware/main/L06-v4.pdf) | [L06-v4能刹车](01-course/code/L06-v4能刹车) | 六道闸门、Job Object 沙箱 |
+| 07 | [pdf](01-course/courseware/main/L07-v5.pdf) | [L07-v5有记忆](01-course/code/L07-v5有记忆) | 会话持久化与压缩 |
+| 08 | [pdf](01-course/courseware/main/L08-v6.pdf) | [L08-v6有地图](01-course/code/L08-v6有地图) | 仓库索引 |
+| 09 | [pdf](01-course/courseware/main/L09-v7.pdf) | [L09-v7有面目](01-course/code/L09-v7有面目) | 终端界面 |
+| 10 | [pdf](01-course/courseware/main/L10-v8.pdf) | [L10-v8能存档](01-course/code/L10-v8能存档) | 配置与密钥 |
+| 11 | [pdf](01-course/courseware/main/L11-v9.pdf) | [L11-v9会分身](01-course/code/L11-v9会分身) | 子代理 |
+| 12 | [pdf](01-course/courseware/main/L12-v10.pdf) | [L12-v10有仪表盘](01-course/code/L12-v10有仪表盘) | 评测与交付 |
 
-开课前还有 7 个前导 PDF（课程简介、AI 全流程、会话与缓存、AgentForge 总览、MockLLM、AI Coding、最小闭环），在 [`course/courseware/intro/`](course/courseware/intro)。
+开课前还有 7 个前导 PDF（课程简介、AI 全流程、会话与缓存、AgentForge 总览、MockLLM、AI Coding、最小闭环），在 [`01-course/courseware/intro/`](01-course/courseware/intro)。
 
 ## 它由哪些部分组成
 
@@ -61,7 +61,7 @@ cd agentforge
 
 ## 没有 API Key 也能跑
 
-所有验证都走 `agentforge/tests/mock_server.py`（OpenAI 兼容假服务端），零费用、可重复：
+所有验证都走 `02-agentforge/tests/mock_server.py`（OpenAI 兼容假服务端），零费用、可重复：
 
 ```powershell
 cd agentforge
@@ -80,11 +80,11 @@ $env:OPENAI_API_KEY="sk-..."
 ## 目录
 
 ```
-course/courseware/intro/   前导课（7 个 PDF）
-course/courseware/main/    主线课件（10 个 PDF + 4 个 PPTX）
-course/code/               L1–L12 每一讲的源码
-agentforge/                完整实现
-text/                      大作业原文 + 第八题的实现
+01-course/courseware/intro/   前导课（7 个 PDF）
+01-course/courseware/main/    主线课件（10 个 PDF + 4 个 PPTX）
+01-course/code/               L1–L12 每一讲的源码
+02-agentforge/                完整实现
+03-text/                      大作业原文 + 第八题的实现
 ```
 
 ## 已知局限
@@ -97,4 +97,4 @@ text/                      大作业原文 + 第八题的实现
 
 ## 许可
 
-代码 MIT。`course/slides/` 的课件与 `course/code/` 的课程源码版权归课程与授课教师，仅用于教学。详见 [NOTICE](NOTICE)。
+代码 MIT。`01-course/slides/` 的课件与 `01-course/code/` 的课程源码版权归课程与授课教师，仅用于教学。详见 [NOTICE](NOTICE)。

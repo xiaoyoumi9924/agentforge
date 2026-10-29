@@ -17,10 +17,10 @@
 
 ## 这个目录是什么
 
-这里**不是**一份能独立编译的工程，而是相对 `agentforge/` 的**改动集合**——新增的文件、以及被改过的文件。
+这里**不是**一份能独立编译的工程，而是相对 `02-agentforge/` 的**改动集合**——新增的文件、以及被改过的文件。
 看点在于「接口没动，只加了一个 Renderer 实现」。
 
-想跑起来，把 `src/` 下的文件覆盖进 `agentforge/` 对应位置（`main.cpp` 放 `agentforge/src/`，`ui/` 整个替换），然后编译：
+想跑起来，把 `src/` 下的文件覆盖进 `02-agentforge/` 对应位置（`main.cpp` 放 `02-agentforge/src/`，`ui/` 整个替换），然后编译：
 
 ```powershell
 cd agentforge

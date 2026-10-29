@@ -21,7 +21,7 @@ scripts/     build.ps1 / build_gui.ps1 / package.ps1
 thirdparty/  单头依赖（nlohmann/json）
 ```
 
-> 仓库里只有这一份完整代码。`course/` 下是课件与每一讲的源码，`text/` 下是题目的改动。
+> 仓库里只有这一份完整代码。`01-course/` 下是课件与每一讲的源码，`03-text/` 下是题目的改动。
 
 ## 能做什么
 
