@@ -20,7 +20,7 @@
 这里**不是**一份能独立编译的工程，而是相对 `app/` 的**改动集合**——新增的文件、以及被改过的文件。
 看点在于「接口没动，只加了一个 Renderer 实现」。
 
-想跑起来，把 `ui/` 和 `main.cpp` 覆盖进 `app/` 对应位置，然后用 `app/build.ps1` 编译：
+想跑起来，把 `src/` 下的文件覆盖进 `app/` 对应位置（`main.cpp` 放 `src/`，`ui/` 整个替换），然后用 `app/build.ps1` 编译：
 
 ```powershell
 cd app
@@ -32,7 +32,7 @@ $env:OPENAI_API_KEY="sk-..."        # 或先起 tests/mock_server.py
 没有浏览器也能验协议：
 
 ```powershell
-./web_probe.ps1     # 不开浏览器，直接跑一遍 WebSocket 握手与事件流
+./scripts/web_probe.ps1     # 不开浏览器，直接跑一遍 WebSocket 握手与事件流
 ```
 
 ## 三层降级
@@ -55,12 +55,16 @@ $env:OPENAI_API_KEY="sk-..."        # 或先起 tests/mock_server.py
 ## 文件
 
 ```
-main.cpp            改过的入口：加 --ui web 分支
-ui/tui_web.cpp      WebRenderer：事件 → JSON → 广播
-ui/web_server.cpp   WebSocket 服务端（握手、帧、广播、心跳）
-ui/web_json.cpp     事件编码（纯函数，无 IO）
-ui/web_page.hpp     单页前端（HTML + CSS + JS，编译进 exe）
-ui/tui_plain.cpp    工厂里加一个分支
-build.ps1           交付版构建脚本（保留作参考）
-web_probe.ps1       不开浏览器的协议验收
+src/
+  main.cpp            改过的入口：加 --ui web 分支
+  ui/tui_web.cpp      WebRenderer：事件 → JSON → 广播
+  ui/web_server.cpp   WebSocket 服务端（握手、帧、广播、心跳）
+  ui/web_json.cpp     事件编码（纯函数，无 IO）
+  ui/web_page.hpp     单页前端（HTML + CSS + JS，编译进 exe）
+  ui/tui_plain.cpp    工厂里加一个分支
+scripts/
+  build.ps1           交付版构建脚本（保留作参考）
+  web_probe.ps1       不开浏览器的协议验收
+images/
+  web-main.png        界面截图
 ```
