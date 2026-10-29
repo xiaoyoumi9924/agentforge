@@ -17,22 +17,22 @@
 | 你有多少时间 | 从哪进 |
 |---|---|
 | **5 分钟** | `cd app && ./build.ps1`，先看成品 |
-| **3 小时** | 从 [`course/code/L1-需求与总体设计`](course/code/L1-需求与总体设计) 顺序读源码 |
+| **3 小时** | 从 [`course/code/L01-需求与总体设计`](course/code/L01-需求与总体设计) 顺序读源码 |
 | **只想看题** | [`exercises/`](exercises) —— 十道题，我们选了第八个 |
 
 ## 12 讲
 
 | # | 课件 | 源码 | 这一步做什么 |
 |---|---|---|---|
-| 01 | [pptx](course/courseware/main/L1-需求与总体设计.pptx) | [L1-需求与总体设计](course/code/L1-需求与总体设计) | 定边界：13 个模块、不变量、验收线 |
-| 02 | [pptx](course/courseware/main/L2-模块设计与核心契约.pptx) | [L2-模块设计与核心契约](course/code/L2-模块设计与核心契约) | 冻结接口，写契约自检 |
-| 03 | [pdf](course/courseware/main/L3-v0.pdf) | [L3-v0能对话](course/code/L3-v0能对话) | 第一次流式回答（SSE） |
-| 04 | [pdf](course/courseware/main/L4-v1.pdf) | [L4-v1能读](course/code/L4-v1能读) | 工具调用、C ABI 插件、权限门 |
-| 05 | [pdf](course/courseware/main/L5-v2.pdf) | [L5-v2v3能改能自主循环](course/code/L5-v2v3能改能自主循环) | 自主循环与上下文预算 |
-| 06 | [pdf](course/courseware/main/L6-v4.pdf) | [L6-v4能刹车](course/code/L6-v4能刹车) | 六道闸门、Job Object 沙箱 |
-| 07 | [pdf](course/courseware/main/L7-v5.pdf) | [L7-v5有记忆](course/code/L7-v5有记忆) | 会话持久化与压缩 |
-| 08 | [pdf](course/courseware/main/L8-v6.pdf) | [L8-v6有地图](course/code/L8-v6有地图) | 仓库索引 |
-| 09 | [pdf](course/courseware/main/L9-v7.pdf) | [L9-v7有面目](course/code/L9-v7有面目) | 终端界面 |
+| 01 | [pptx](course/courseware/main/L01-需求与总体设计.pptx) | [L01-需求与总体设计](course/code/L01-需求与总体设计) | 定边界：13 个模块、不变量、验收线 |
+| 02 | [pptx](course/courseware/main/L02-模块设计与核心契约.pptx) | [L02-模块设计与核心契约](course/code/L02-模块设计与核心契约) | 冻结接口，写契约自检 |
+| 03 | [pdf](course/courseware/main/L03-v0.pdf) | [L03-v0能对话](course/code/L03-v0能对话) | 第一次流式回答（SSE） |
+| 04 | [pdf](course/courseware/main/L04-v1.pdf) | [L04-v1能读](course/code/L04-v1能读) | 工具调用、C ABI 插件、权限门 |
+| 05 | [pdf](course/courseware/main/L05-v2.pdf) | [L05-v2v3能改能自主循环](course/code/L05-v2v3能改能自主循环) | 自主循环与上下文预算 |
+| 06 | [pdf](course/courseware/main/L06-v4.pdf) | [L06-v4能刹车](course/code/L06-v4能刹车) | 六道闸门、Job Object 沙箱 |
+| 07 | [pdf](course/courseware/main/L07-v5.pdf) | [L07-v5有记忆](course/code/L07-v5有记忆) | 会话持久化与压缩 |
+| 08 | [pdf](course/courseware/main/L08-v6.pdf) | [L08-v6有地图](course/code/L08-v6有地图) | 仓库索引 |
+| 09 | [pdf](course/courseware/main/L09-v7.pdf) | [L09-v7有面目](course/code/L09-v7有面目) | 终端界面 |
 | 10 | [pdf](course/courseware/main/L10-v8.pdf) | [L10-v8能存档](course/code/L10-v8能存档) | 配置与密钥 |
 | 11 | [pdf](course/courseware/main/L11-v9.pdf) | [L11-v9会分身](course/code/L11-v9会分身) | 子代理 |
 | 12 | [pdf](course/courseware/main/L12-v10.pdf) | [L12-v10有仪表盘](course/code/L12-v10有仪表盘) | 评测与交付 |
