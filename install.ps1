@@ -10,18 +10,55 @@
 param(
     [string]$Version = 'latest',
     [string]$Dir = (Join-Path $env:LOCALAPPDATA 'AgentForge'),
+    [string]$Proxy = $env:HTTPS_PROXY,
     [switch]$NoStart
 )
 
 $ErrorActionPreference = 'Stop'
 $Repo = 'xiaoyoumi9924/agentforge'
 $Headers = @{ 'User-Agent' = 'AgentForge-Installer' }
+$Curl = Join-Path $env:SystemRoot 'System32\curl.exe'
 
 function Say($msg, $color = 'Gray') { Write-Host $msg -ForegroundColor $color }
+
+# 有代理就走代理（国内直连 GitHub 经常超时）
+$net = @{}
+if ($Proxy) { $net['Proxy'] = $Proxy }
+
+# 下载：先试 .NET，失败再用 curl（curl 走另一套 TLS 栈，能绕开一部分环境问题）
+function Get-File($url, $out) {
+    try {
+        Invoke-WebRequest -Uri $url -OutFile $out -Headers $Headers -TimeoutSec 300 @net
+        return $true
+    } catch {
+        if (-not (Test-Path $Curl)) { return $false }
+    }
+    $a = @('-fsSL', '--max-time', '300', '-o', $out, $url)
+    if ($Proxy) { $a = @('-x', $Proxy) + $a }
+    & $Curl @a
+    return ($LASTEXITCODE -eq 0)
+}
+
+function Get-Json($url) {
+    try {
+        return Invoke-RestMethod -Uri $url -Headers $Headers -TimeoutSec 30 @net
+    } catch {
+        if (-not (Test-Path $Curl)) { throw }
+    }
+    $tmp = Join-Path $env:TEMP ("af_meta_" + [guid]::NewGuid().ToString('N').Substring(0, 6) + ".json")
+    $a = @('-fsSL', '--max-time', '60', '-o', $tmp, $url)
+    if ($Proxy) { $a = @('-x', $Proxy) + $a }
+    & $Curl @a | Out-Null
+    if ($LASTEXITCODE -ne 0) { throw "下载版本信息失败" }
+    $txt = Get-Content -LiteralPath $tmp -Raw -Encoding UTF8
+    Remove-Item $tmp -Force -ErrorAction SilentlyContinue
+    return ($txt | ConvertFrom-Json)
+}
 
 Say ""
 Say "  AgentForge 安装器" Cyan
 Say "  ----------------------------------------" DarkGray
+if ($Proxy) { Say "  代理: $Proxy" DarkGray }
 
 # ---- 1. 查版本 ------------------------------------------------------------
 $api = if ($Version -eq 'latest') {
@@ -31,16 +68,16 @@ $api = if ($Version -eq 'latest') {
 }
 
 try {
-    $rel = Invoke-RestMethod -Uri $api -Headers $Headers -TimeoutSec 30
+    $rel = Get-Json $api
 } catch {
     Say "  [x] 查不到版本信息：$($_.Exception.Message)" Red
-    Say "      如果是网络问题，先开代理，或手动到 Releases 页面下载 zip。" Yellow
+    Say "      手动下载：https://github.com/$Repo/releases" Yellow
     exit 1
 }
 
-$asset = $rel.assets | Where-Object { $_.name -like 'AgentForge-Web-*.zip' } | Select-Object -First 1
+$asset = @($rel.assets | Where-Object { $_.name -like 'AgentForge-Web-*.zip' })[0]
 if (-not $asset) {
-    Say "  [x] $($rel.tag_name) 里没有找到 AgentForge-Web-*.zip" Red
+    Say "  [x] $($rel.tag_name) 里没有 AgentForge-Web-*.zip" Red
     exit 1
 }
 
@@ -49,11 +86,9 @@ Say "  版本: $($rel.tag_name)   包: $($asset.name)   大小: $([math]::Round(
 # ---- 2. 下载 --------------------------------------------------------------
 $zip = Join-Path $env:TEMP ("agentforge-" + [guid]::NewGuid().ToString('N').Substring(0, 8) + ".zip")
 Say "  下载中…"
-try {
-    Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $zip -Headers $Headers -TimeoutSec 300
-} catch {
-    Say "  [x] 下载失败：$($_.Exception.Message)" Red
-    Say "      Releases 页面: https://github.com/$Repo/releases" Yellow
+if (-not (Get-File $asset.browser_download_url $zip)) {
+    Say "  [x] 下载失败" Red
+    Say "      https://github.com/$Repo/releases" Yellow
     exit 1
 }
 
