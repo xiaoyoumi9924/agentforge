@@ -50,20 +50,6 @@ curl -fsSL https://raw.githubusercontent.com/xiaoyoumi9924/agentforge/main/insta
 写文件、执行命令前会弹窗确认，也可切换为「自动允许」；终端窗口是服务本体，关掉即停止。
 所有产出固定在安装目录的 `workspace/web/` 下，与启动位置无关。
 
-## 架构
-
-自下而上五层，接口冻结后互不穿透：
-
-```
-模型层    provider（OpenAI 兼容）──── SSE 流式解析 ──── MockLLM
-循环层    AgentLoop ── 上下文分层预算 / 压缩 / 降级 ── 六道闸门
-工具层    ToolRegistry ── Read / Write / Edit / Run ── C ABI 插件
-索引层    仓库索引（符号 + include 边）── 检索 ── L3 上下文
-界面层    CLI ── 终端 UI ── Qt 6 桌面端 ── 浏览器端（WebSocket）
-```
-
-四套界面共用同一个 `AgentLoop`，行为一致，只有交互形式不同。
-
 ## 项目结构
 
 ```
@@ -94,13 +80,6 @@ python tests/mock_server.py &
 ./build/agent.exe --selftest     # 115 项进程内自检
 ./tests/evaluate.ps1             # 4/4 端到端用例
 ```
-
-## 已知限制
-
-- 沙箱基于 Job Object，提供进程树强杀与资源上限，不提供网络与文件系统的内核级边界
-- 仓库索引为词法级，符号抽取存在误报；全量重建，未做增量
-- GUI 的 diff 面板展示「参数 + 结果」对照，没有逐行高亮
-- 评测默认使用 MockLLM，真实模型经环境变量接入，未在评测中计费运行
 
 ## 文档
 

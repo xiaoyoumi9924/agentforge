@@ -56,3 +56,10 @@ python tests/mock_server.py &
 $env:OPENAI_BASE_URL="https://api.deepseek.com/v1"
 $env:OPENAI_API_KEY="sk-..."
 ```
+
+## 已知限制
+
+- 沙箱基于 Job Object，提供进程树强杀与资源上限，不提供网络与文件系统的内核级边界
+- 仓库索引为词法级，符号抽取存在误报；全量重建，未做增量
+- GUI 的 diff 面板展示「参数 + 结果」对照，没有逐行高亮
+- 评测默认使用 MockLLM，真实模型经环境变量接入，未在评测中计费运行
