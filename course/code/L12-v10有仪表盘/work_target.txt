@@ -1,0 +1,19 @@
+// 这是 L4 用来验证「模型主动读文件」的样本文件。
+// 它里面有 3 个函数 —— 模型必须真的读到内容才能答对。
+#include <string>
+
+int sum(int a, int b) {
+    return a + b;
+}
+
+std::string greet(const std::string& name) {
+    return "hello, " + name;
+}
+
+bool isEven(int n) {
+    return n % 2 == 0;
+}
+
+int main() {
+    return add(1, 2);
+}

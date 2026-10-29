@@ -1,0 +1,151 @@
+// ---------------------------------------------------------------------------
+//  L2 · tool_registry.hpp —— 端口 ④（UI）+ 工具注册表 + 权限契约
+//
+//  三条核心原则：
+//    1. 模型只产出**意图**，绝不直接触碰文件系统。真正的 I/O 由这里完成。
+//    2. 每一步失败都是"回喂 observation"而不是"抛异常" ——
+//       这是 Agent 循环能自我修复的前提（对应 FR-8）。
+//    3. 权限判定：deny → ask → allow，**deny 永远赢**。
+//
+//  ★ 本讲只有声明，没有实现 —— 派发与校验在 L4，权限门在 L6。
+// ---------------------------------------------------------------------------
+#pragma once
+
+#include <functional>
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "sandbox.hpp"
+#include "types.hpp"
+
+namespace af {
+
+// ============================================================================
+//  权限契约
+// ============================================================================
+
+enum class DecisionKind { Allow, Ask, Deny };
+
+struct Decision {
+    DecisionKind kind = DecisionKind::Ask;
+    std::string  reason;     // 给日志和模型看的判定理由
+    std::string  prompt;     // 展示给用户的话（Ask 时用）
+};
+
+// 权限规则。有序求值：所有 deny 段规则强制排在最前。
+struct PermissionRule {
+    DecisionKind kind = DecisionKind::Allow;
+    std::string  toolPattern;   // "*" | "Bash" | "Bash(npm test)"
+    std::string  reason;
+
+    bool matches(const std::string& toolName, const json& args) const;
+};
+
+class IPermissionGate {
+public:
+    virtual ~IPermissionGate() = default;
+    virtual Decision evaluate(const ToolDef& tool, const json& args) const = 0;
+};
+
+// ============================================================================
+//  端口 ④：UI
+//
+//  ★ 只有两个方法，但它是"核心不知道 UI 存在"的唯一保证。
+//    多了会污染核心（渲染逻辑渗进来），少了就表达不了"需要人批准"这件事。
+// ============================================================================
+class IUIPort {
+public:
+    virtual ~IUIPort() = default;
+    virtual bool confirm(const std::string& prompt) = 0;   // 阻塞式询问
+    virtual void notice(const std::string& msg) = 0;       // 单向通知
+};
+
+// 空对象（P-17）：无头 / 子代理场景下没有 UI。
+// ★ 安全默认必须是"拒绝"，不是"允许" ——
+//   没有 UI 时的正确行为是 fail-closed。
+class NoUI final : public IUIPort {
+public:
+    bool confirm(const std::string&) override;
+    void notice(const std::string&) override;
+};
+
+// ============================================================================
+//  工具注册表
+//
+//  职责边界：
+//    它管  「注册 · Schema 校验 · 权限判定 · 派发 · 输出过滤」
+//    它不管「循环」「上下文」「模型调用」
+// ============================================================================
+class ToolRegistry {
+public:
+    // 注册内置工具（进程内实现）
+    void registerBuiltin(ToolDef def, std::function<ToolResult(const json&)> fn);
+
+    // 顺序稳定（利于提示缓存前缀命中）。
+    // ★ 这个列表最终要交给 ContextAssembler::setTools()，
+    //   否则请求里 tools 为空 —— 模型永远看不到工具，只会干聊。
+    std::vector<ToolDef> defs() const;
+
+    const ToolDef* find(const std::string& name) const;
+
+    // 派发单个调用。失败一律返回 isError=true 的 ToolResult，**不抛异常**。
+    ToolResult dispatch(const ToolCall& call, IUIPort& ui);
+
+    // 一个 assistant 消息里可能有 N 个 tool_call
+    std::vector<ToolResult> dispatchAll(const std::vector<ToolCall>& calls, IUIPort& ui);
+
+    void setGate(std::shared_ptr<IPermissionGate> g);
+    void setSandbox(std::shared_ptr<ISandbox> s);
+
+    // ── 以下两项后续讲次再加，本讲刻意不写 ──────────────────────────────
+    //   L4：bool loadPlugin(const std::string& path, std::string& err);
+    //   L11：ToolRegistry readOnlyView() const;
+
+private:
+    struct Entry {
+        ToolDef def;
+        std::function<ToolResult(const json&)> fn;   // 内置实现
+        // L4 会加：const AFToolPlugin* abi;  std::shared_ptr<void> pluginLib;
+    };
+
+    std::vector<Entry> entries_;
+    std::shared_ptr<IPermissionGate> gate_;
+    std::shared_ptr<ISandbox> sandbox_;
+
+    ToolResult invoke(const Entry& e, const json& args);
+};
+
+// ============================================================================
+//  默认权限门：deny 段 → ask 段 → allow 段，最后落到 fallback
+//
+//  ★ 构造时必须把 deny 规则稳定排到最前 ——
+//    规则表里的顺序会影响结果，"先写的 allow 赢过后面的 deny"是明确的安全漏洞。
+// ============================================================================
+class DefaultPermissionGate : public IPermissionGate {
+public:
+    explicit DefaultPermissionGate(std::vector<PermissionRule> rules,
+                                   DecisionKind fallback = DecisionKind::Ask);
+
+    Decision evaluate(const ToolDef& tool, const json& args) const override;
+
+private:
+    static std::string describe(const ToolDef& t, const json& args);
+    std::vector<PermissionRule> rules_;
+    DecisionKind fallback_;
+};
+
+// ============================================================================
+//  大结果落盘（压缩的 L0 层）
+//
+//  放在这里而不是 context_budget.hpp：它是**工具派发管线的最后一步**
+//  （注册 → 校验 → 权限 → 执行 → **输出过滤**），属于工具系统的职责。
+//
+//  超过阈值就写文件，上下文里只留约 2KB 预览 + 路径。
+//  ★ Read 工具的 persistThresholdChars 必须设为 SIZE_MAX 豁免，
+//    否则会形成"读文件 → 落盘 → 再去读那个落盘文件"的循环依赖。
+// ============================================================================
+ToolResult maybePersistLargeResult(ToolResult r, const ToolDef& def,
+                                   const std::string& dumpDir);
+
+}  // namespace af
