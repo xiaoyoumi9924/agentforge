@@ -9,14 +9,14 @@
 三样东西放在一起：
 
 - **课程**（`course/`）—— 12 讲的原始课件，以及每一讲的源码，全是老师给的那份，未做改写
-- **实现**（`app/`）—— 跟着这 12 讲做出来的完整工程，clone 下来就能编译
+- **实现**（`agentforge/`）—— 跟着这 12 讲做出来的完整工程，clone 下来就能编译
 - **作业**（`text/`）—— 大作业原文（十个题目）+ 我们选的第八个：给 Agent 加一个浏览器前端
 
 ## 从这里开始
 
 | 你有多少时间 | 从哪进 |
 |---|---|
-| **5 分钟** | `cd app && ./build.ps1`，先看成品 |
+| **5 分钟** | `cd agentforge && ./scripts/build.ps1`，先看成品 |
 | **3 小时** | 从 [`course/code/L01-需求与总体设计`](course/code/L01-需求与总体设计) 顺序读源码 |
 | **只想看题** | [`text/`](text) —— 十道题（[PDF](text/大作业-题目.pdf)），我们选了第八个 |
 
@@ -54,17 +54,17 @@
 前置：Windows 10/11、Visual Studio 2022（「使用 C++ 的桌面开发」工作负载，含 Windows SDK）。
 
 ```powershell
-cd app
-./build.ps1              # → build\agent.exe
-./build_gui.ps1          # → build_gui\AgentForgeGUI.exe（需要 Qt 6.8）
+cd agentforge
+./scripts/build.ps1              # → build\agent.exe
+./scripts/build_gui.ps1          # → build_gui\AgentForgeGUI.exe（需要 Qt 6.8）
 ```
 
 ## 没有 API Key 也能跑
 
-所有验证都走 `app/tests/mock_server.py`（OpenAI 兼容假服务端），零费用、可重复：
+所有验证都走 `agentforge/tests/mock_server.py`（OpenAI 兼容假服务端），零费用、可重复：
 
 ```powershell
-cd app
+cd agentforge
 python tests/mock_server.py &
 ./build/agent.exe --selftest     # 115 项进程内自检
 ./tests/evaluate.ps1             # 4/4 端到端用例
@@ -83,7 +83,7 @@ $env:OPENAI_API_KEY="sk-..."
 course/courseware/intro/   前导课（7 个 PDF）
 course/courseware/main/    主线课件（10 个 PDF + 4 个 PPTX）
 course/code/               L1–L12 每一讲的源码
-app/                       完整实现：核心、GUI、插件、测试、构建脚本
+agentforge/                完整实现
 text/                      大作业原文 + 第八题的实现
 ```
 

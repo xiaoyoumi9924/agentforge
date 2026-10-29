@@ -26,6 +26,7 @@ if (-not $Out) {
 
 $ErrorActionPreference = 'Stop'
 $Here = Split-Path -Parent $MyInvocation.MyCommand.Path
+$Here = Split-Path -Parent $Here   # 脚本在 scripts/，上一级才是工程根
 
 # ---- 1. 定位 MSVC（优先 vswhere 官方机制） -----------------------------------
 $MsvcDir = $null

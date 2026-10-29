@@ -17,6 +17,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $Here = Split-Path -Parent $MyInvocation.MyCommand.Path
+$Here = Split-Path -Parent $Here   # 脚本在 scripts/，上一级才是工程根
 
 # ---- 1. 定位 MSVC ----
 $MsvcDir = $null

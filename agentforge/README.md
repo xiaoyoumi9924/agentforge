@@ -3,9 +3,22 @@
 第 12 讲的完整工程。想直接跑起来，从这里开始。
 
 ```powershell
-./build.ps1          # → build\agent.exe
-./build_gui.ps1      # → build_gui\AgentForgeGUI.exe（需要 Qt 6.8）
+./scripts/build.ps1          # → build\agent.exe
+./scripts/build_gui.ps1      # → build_gui\AgentForgeGUI.exe（需要 Qt 6.8）
 ./build/agent.exe --selftest      # 115 项自检
+```
+
+目录按角色分层：
+
+```
+src/         核心：循环、上下文、工具、沙箱、索引、会话
+gui/         Qt 6 桌面端
+plugins/     C ABI 插件示例
+tests/       契约自检、MockLLM、各讲验证、端到端评测
+docs/        设计文档与评估报告
+configs/     配置样例
+scripts/     build.ps1 / build_gui.ps1 / package.ps1
+thirdparty/  单头依赖（nlohmann/json）
 ```
 
 > 仓库里只有这一份完整代码。`course/` 下是课件与每一讲的源码，`text/` 下是题目的改动。
