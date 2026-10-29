@@ -1,0 +1,34 @@
+# 构建产物
+build/
+build_gui/
+*.exe
+*.obj
+*.o
+*.pdb
+*.ilk
+*.lib
+*.exp
+*.dll
+*.map
+
+# 运行产物
+.af-sessions/
+.af-dump*/
+*.log
+mock_requests.log
+af_selftest_secret.bin
+af_selftest_target.txt
+
+# 测试临时输出
+tests/_*.txt
+tests/out.txt
+tests/err.txt
+
+# Python
+__pycache__/
+*.pyc
+
+# 编辑器
+.vs/
+.vscode/
+*.user
