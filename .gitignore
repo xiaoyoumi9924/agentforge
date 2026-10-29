@@ -32,3 +32,10 @@ __pycache__/
 .vs/
 .vscode/
 *.user
+
+# 发布包
+dist/
+
+# Agent 工作目录：产物不入库，只留说明
+02-agentforge/workspace/*
+!02-agentforge/workspace/README.md
