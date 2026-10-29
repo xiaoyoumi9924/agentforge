@@ -5,7 +5,7 @@ Copyright (c) 2026 xiaoyoumi9924
 
 ## 课程材料
 
-- `course/slides/` 下的 PDF、PPTX 由课程与授课教师提供，
+- `course/courseware/` 下的 PDF、PPTX 由课程与授课教师提供，
   版权归课程与授课教师所有，仅用于教学目的，不包含在 MIT 许可范围内。
 - `course/code/` 下 L1–L12 的源码为课程提供的参考实现，同样归课程与授课教师所有，
   本仓库仅做原样收录（去掉编译产物），不声明任何权利。

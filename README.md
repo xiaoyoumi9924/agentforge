@@ -24,18 +24,20 @@
 
 | # | 课件 | 源码 | 这一步做什么 |
 |---|---|---|---|
-| 01 | — | [L1-需求与总体设计](course/code/L1-需求与总体设计) | 定边界：13 个模块、不变量、验收线 |
-| 02 | [L2 pptx](course/slides/L2-模块设计与核心契约.pptx) | [L2-模块设计与核心契约](course/code/L2-模块设计与核心契约) | 冻结接口，写契约自检 |
-| 03 | [L3 pdf](course/slides/L3-v0.pdf) | [L3-v0能对话](course/code/L3-v0能对话) | 第一次流式回答（SSE） |
-| 04 | [L4 pdf](course/slides/L4-v1.pdf) | [L4-v1能读](course/code/L4-v1能读) | 工具调用、C ABI 插件、权限门 |
-| 05 | [L5 pdf](course/slides/L5-v2.pdf) | [L5-v2v3能改能自主循环](course/code/L5-v2v3能改能自主循环) | 自主循环与上下文预算 |
-| 06 | — | [L6-v4能刹车](course/code/L6-v4能刹车) | 六道闸门、Job Object 沙箱 |
-| 07 | — | [L7-v5有记忆](course/code/L7-v5有记忆) | 会话持久化与压缩 |
-| 08 | — | [L8-v6有地图](course/code/L8-v6有地图) | 仓库索引 |
-| 09 | — | [L9-v7有面目](course/code/L9-v7有面目) | 终端界面 |
-| 10 | — | [L10-v8能存档](course/code/L10-v8能存档) | 配置与密钥 |
-| 11 | — | [L11-v9会分身](course/code/L11-v9会分身) | 子代理 |
-| 12 | — | [L12-v10有仪表盘](course/code/L12-v10有仪表盘) | 评测与交付 |
+| 01 | [pptx](course/courseware/main/L1-需求与总体设计.pptx) | [L1-需求与总体设计](course/code/L1-需求与总体设计) | 定边界：13 个模块、不变量、验收线 |
+| 02 | [pptx](course/courseware/main/L2-模块设计与核心契约.pptx) | [L2-模块设计与核心契约](course/code/L2-模块设计与核心契约) | 冻结接口，写契约自检 |
+| 03 | [pdf](course/courseware/main/L3-v0.pdf) | [L3-v0能对话](course/code/L3-v0能对话) | 第一次流式回答（SSE） |
+| 04 | [pdf](course/courseware/main/L4-v1.pdf) | [L4-v1能读](course/code/L4-v1能读) | 工具调用、C ABI 插件、权限门 |
+| 05 | [pdf](course/courseware/main/L5-v2.pdf) | [L5-v2v3能改能自主循环](course/code/L5-v2v3能改能自主循环) | 自主循环与上下文预算 |
+| 06 | [pdf](course/courseware/main/L6-v4.pdf) | [L6-v4能刹车](course/code/L6-v4能刹车) | 六道闸门、Job Object 沙箱 |
+| 07 | [pdf](course/courseware/main/L7-v5.pdf) | [L7-v5有记忆](course/code/L7-v5有记忆) | 会话持久化与压缩 |
+| 08 | [pdf](course/courseware/main/L8-v6.pdf) | [L8-v6有地图](course/code/L8-v6有地图) | 仓库索引 |
+| 09 | [pdf](course/courseware/main/L9-v7.pdf) | [L9-v7有面目](course/code/L9-v7有面目) | 终端界面 |
+| 10 | [pdf](course/courseware/main/L10-v8.pdf) | [L10-v8能存档](course/code/L10-v8能存档) | 配置与密钥 |
+| 11 | [pdf](course/courseware/main/L11-v9.pdf) | [L11-v9会分身](course/code/L11-v9会分身) | 子代理 |
+| 12 | [pdf](course/courseware/main/L12-v10.pdf) | [L12-v10有仪表盘](course/code/L12-v10有仪表盘) | 评测与交付 |
+
+开课前还有 7 个前导 PDF（课程简介、AI 全流程、会话与缓存、AgentForge 总览、MockLLM、AI Coding、最小闭环），在 [`course/courseware/intro/`](course/courseware/intro)。
 
 ## 它由哪些部分组成
 
@@ -78,10 +80,11 @@ $env:OPENAI_API_KEY="sk-..."
 ## 目录
 
 ```
-course/slides/   原始课件（10 个 PDF + 4 个 PPTX）
-course/code/     L1–L12 每一讲的源码
-app/             完整实现：核心、GUI、插件、测试、构建脚本
-exercises/       十个题目 + 第八题的实现
+course/courseware/intro/   前导课（7 个 PDF）
+course/courseware/main/    主线课件（10 个 PDF + 4 个 PPTX）
+course/code/               L1–L12 每一讲的源码
+app/                       完整实现：核心、GUI、插件、测试、构建脚本
+exercises/                 十个题目 + 第八题的实现
 ```
 
 ## 已知局限
