@@ -38,13 +38,18 @@ irm https://raw.githubusercontent.com/xiaoyoumi9924/agentforge/main/install.ps1 
 
 ```
 .
-├── 01-course/        12 讲课件与逐讲源码
-├── 02-agentforge/    完整工程：核心 / GUI / 插件 / 测试
-├── 03-text/          大作业题目与实现
-├── deploy/           安装与发布脚本
-├── docs/             使用手册
-├── install.ps1       一键安装（另有 install.sh）
-├── LICENSE           MIT
+├── 01-course/            12 讲课件与逐讲源码
+│   ├── courseware/       课件：前导 7 份 + 主线 12 讲
+│   └── code/             逐讲源码 L01 … L12
+├── 02-agentforge/        完整工程
+│   ├── src/              核心实现
+│   ├── gui/              Qt 6 桌面端
+│   └── tests/            自检与端到端评测
+├── 03-text/              大作业题目与实现
+├── deploy/               安装与发布脚本
+├── docs/                 使用手册
+├── install.ps1           一键安装（另有 install.sh）
+├── LICENSE               MIT
 └── README.md
 ```
 
