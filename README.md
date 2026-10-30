@@ -15,9 +15,6 @@
 目前是能用的完整版本：已完成网页端，其余功能继续迭代。
 
 ### 第一步：安装
-
-目前仅支持 Windows 系统。
-
 ```powershell
 irm https://raw.githubusercontent.com/xiaoyoumi9924/agentforge/main/install.ps1 | iex
 ```
