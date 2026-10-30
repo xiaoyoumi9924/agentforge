@@ -11,7 +11,7 @@
 ![浏览器端界面](03-text/08-web-ui/images/web-main.png)
 
 
-
+\n
 ## 快速开始
 
 目前是能用的完整版本：已完成网页端，其余功能继续迭代。
@@ -33,11 +33,15 @@ irm https://raw.githubusercontent.com/xiaoyoumi9924/agentforge/main/install.ps1 
 
 </details>
 
+\n
+
 ### 第二步：连接模型
 
 启动后自动打开浏览器并访问 `http://127.0.0.1:8080`，终端提示粘贴 API Key，默认对接 DeepSeek。
 
 到这一步就装完了：一个只跑在本机的网页，你下指令，它读文件、改代码、跑命令。
+\n
+\n
 
 ## 项目结构
 
