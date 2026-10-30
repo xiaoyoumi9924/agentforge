@@ -58,4 +58,22 @@ Write-Host "模型:     $env:AF_MODEL  ($env:OPENAI_BASE_URL)" -ForegroundColor 
 Write-Host ""
 
 # ---- 4. 启动 --------------------------------------------------------------
-& $Exe --web
+#  先在后台排一个「3 秒后打开浏览器」的任务，再启动服务本体。
+#  为什么不在启动后打开：& $Exe --web 是阻塞调用，它返回时服务已经停了。
+$Port = 8080
+if ($env:AF_WEB_PORT -match '^\d+$') { $Port = [int]$env:AF_WEB_PORT }
+$Url  = "http://127.0.0.1:$Port"
+
+Write-Host "启动中… 浏览器将自动打开 $Url" -ForegroundColor DarkGray
+$opener = Start-Job -ScriptBlock {
+    param($u)
+    Start-Sleep -Seconds 3
+    Start-Process $u
+} -ArgumentList $Url
+
+try {
+    & $Exe --web
+} finally {
+    Stop-Job $opener -ErrorAction SilentlyContinue
+    Remove-Job $opener -Force -ErrorAction SilentlyContinue
+}
