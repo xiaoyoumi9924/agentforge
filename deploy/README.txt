@@ -10,14 +10,17 @@ AgentForge · 浏览器版
 浏览器会自动打开 http://127.0.0.1:8080 ，在输入框里写任务即可。
 关掉窗口（或 Ctrl+C）即停止服务。
 
-第一次启动会问你要 API Key
+第一次启动在网页里填 API Key
 ---------------------------
+浏览器打开后会直接弹出「设置」，把 Key 贴进去点「保存并应用」即可。
+Key 存在这台机器的浏览器里（localStorage），下次打开不用再填。
+
 支持任何 OpenAI 兼容端点。默认接 DeepSeek：
 
     https://api.deepseek.com/v1    模型 deepseek-chat
 
-Key 用 Windows DPAPI 加密后存在本目录的 key.dat，只有当前 Windows 用户能解开。
-想换 Key：删掉 key.dat 再启动。想换模型：设置环境变量 AF_MODEL / OPENAI_BASE_URL。
+想换 Key：网页左下角「设置」随时能改，保存后下一条消息生效。
+想换模型或端点：先设环境变量 AF_MODEL / OPENAI_BASE_URL，再启动。
 
 文件都在哪
 ----------
@@ -25,7 +28,6 @@ agent.exe          程序本体（无外部依赖）
 run-web.ps1        启动脚本
 run-web.bat        双击入口
 workspace\web\     ★ Agent 的所有产出都写在这里
-key.dat            加密后的 API Key（首次启动后生成）
 
 卸载
 ----

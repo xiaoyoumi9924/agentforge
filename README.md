@@ -29,7 +29,7 @@ irm https://raw.githubusercontent.com/xiaoyoumi9924/agentforge/main/install.ps1 
 
 ### 第二步：连接模型
 
-启动后自动打开浏览器并访问 `http://127.0.0.1:8080`，终端提示粘贴 API Key，默认对接 DeepSeek。
+启动后自动打开浏览器并访问 `http://127.0.0.1:8080`，第一次会弹窗让你填 API Key（存在浏览器里，下次不用再填），默认对接 DeepSeek。
 
 到这一步就装完了：一个只跑在本机的网页，你下指令，它读文件、改代码、跑命令。
 

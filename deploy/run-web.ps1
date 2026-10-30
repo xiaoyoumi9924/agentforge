@@ -2,9 +2,9 @@
 #  run-web.ps1 —— 启动 AgentForge 的浏览器版
 #
 #  它做三件事：
-#    1. 找到 API Key（环境变量 > 同目录 key.dat > 当场问一次）
+#    1. 取 API Key（环境变量 > 同目录 key.dat）；都没有也照常起服务，网页里填
 #    2. 把工作目录固定到 workspace\web（Agent 的所有产出都落在这里）
-#    3. 起 agent.exe --web，浏览器会自动打开 http://127.0.0.1:8080
+#    3. 起 agent.exe --web，等服务真的在听了再打开 http://127.0.0.1:8080
 # ---------------------------------------------------------------------------
 $ErrorActionPreference = 'Stop'
 
@@ -17,35 +17,30 @@ if (-not (Test-Path $Exe)) {
 }
 
 # ---- 1. API Key -----------------------------------------------------------
-function Save-Key([securestring]$sec) {
-    ConvertFrom-SecureString $sec | Set-Content -LiteralPath (Join-Path $Here 'key.dat') -Encoding ASCII
-}
-
+#  ★ 终端**不再**追问 Key。Key 在网页里填：第一次打开网页会自动弹设置，
+#    存进浏览器的 localStorage，下次直接可用。
+#    这里只负责让服务能起来（agent.exe 没 Key 会立刻退出）：
+#    环境变量里有就用；同目录 key.dat 里有就用；都没有就先塞一个占位 Key。
 if (-not $env:OPENAI_API_KEY) {
     $keyFile = Join-Path $Here 'key.dat'
     if (Test-Path $keyFile) {
-        $sec = ConvertTo-SecureString (Get-Content -LiteralPath $keyFile -Raw)
-    } else {
-        Write-Host ""
-        Write-Host "首次启动需要模型 API Key（DeepSeek / OpenAI 兼容端点都可以）。" -ForegroundColor Cyan
-        Write-Host "密钥会用 Windows DPAPI 加密后存在本目录，只有当前用户可以解开。" -ForegroundColor DarkGray
-        $sec = Read-Host "粘贴 API Key（回车跳过，之后会自动再问）" -AsSecureString
-        if ($sec.Length -gt 0) { Save-Key $sec }
-    }
-    if ($sec.Length -gt 0) {
-        $bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($sec)
-        try { $env:OPENAI_API_KEY = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($bstr) }
-        finally { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr) }
+        try {
+            $sec = ConvertTo-SecureString (Get-Content -LiteralPath $keyFile -Raw)
+            $bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($sec)
+            try { $env:OPENAI_API_KEY = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($bstr) }
+            finally { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr) }
+        } catch {
+            Write-Host "[!] key.dat 解不开（换了机器/换了用户？），改用网页里填的 Key。" -ForegroundColor Yellow
+        }
     }
 }
 
 if (-not $env:OPENAI_API_KEY) {
-    #  ★ 没 Key 也要把服务起起来：网页右上角「设置」里能填 Key，保存后下一条消息生效。
+    #  ★ 没 Key 也要把服务起起来：网页一打开就弹设置让你填。
     #    早期版本在这里只警告一句就往下走，而 agent.exe 拿不到 Key 会**直接退出**，
-    #    用户看到的现象是「终端一开就没了 / 网页打不开」。用一个占位 Key 先把服务撑住。
+    #    用户看到的现象是「终端一开就没了 / 网页打不开」。
     $env:OPENAI_API_KEY = 'sk-waiting-for-browser'
-    Write-Host "[!] 暂时没有 Key：先把网页开起来。" -ForegroundColor Yellow
-    Write-Host "    打开后点右上角「设置」填 API Key，保存后下一条消息生效。" -ForegroundColor Yellow
+    Write-Host "[!] 还没有 API Key：网页打开后填一次即可（存在浏览器里，下次不用再填）。" -ForegroundColor Yellow
 }
 
 # ---- 2. 默认接 DeepSeek ---------------------------------------------------

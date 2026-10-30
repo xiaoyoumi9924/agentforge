@@ -1515,8 +1515,12 @@ inline constexpr const char* kWebPage6 = R"AFWEB(
       if (m.t === "hello") {
         setConn(true);
         if (m.port) $("#whoTxt").textContent = "本地 · 127.0.0.1:" + m.port;
-        if (!settings.apiKey && m.hasKey === false) {
-          $("#hint").textContent = "还没有 API Key —— 左下角「设置」里填一个";
+        // ★ 第一次进来（本机还没存过 Key）直接把设置弹出来 ——
+        //   用户不必先知道"左下角有个设置"，终端也不必再帮他填。
+        //   取消也放行：他还能先看看界面，之后左下角「设置」随时能再开。
+        if (!settings.apiKey) {
+          $("#hint").textContent = "先填 API Key 才能对话，浏览器会记住";
+          $("#optset").click();
         }
         return;
       }
