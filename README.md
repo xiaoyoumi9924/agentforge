@@ -10,24 +10,23 @@
 
 ![浏览器端界面](03-text/08-web-ui/images/web-main.png)
 
-<sub>浏览器端（`agent.exe --web`）：左侧会话列表，中间任务流，每次工具调用渲染成一张卡片，展开可见参数、耗时与输出。</sub>
+
 
 ## 快速开始
 
-目前是能用的完整版本：已完成网页端，其余功能继续迭代。装好即可运行，不写注册表、不改 PATH。
+目前是能用的完整版本：已完成网页端，其余功能继续迭代。
 
 ### 第一步：安装
 
 目前仅支持 Windows 系统。
 
-**方式一：PowerShell**
 
 ```powershell
 irm https://raw.githubusercontent.com/xiaoyoumi9924/agentforge/main/install.ps1 | iex
 ```
 
 <details>
-<summary><b>方式二：手动下载（备用）</b> —— 脚本不可用时走这条路</summary>
+<summary><b>备用方法</summary>
 
 到 [Releases 页面](../../releases/latest) 下载 `AgentForge-Web-v1.0.0.zip`（1.2 MB），
 解压到任意目录，双击 `run-web.bat` 即可运行，无需其他依赖。
@@ -85,5 +84,4 @@ irm https://raw.githubusercontent.com/xiaoyoumi9924/agentforge/main/install.ps1 
 
 ## 许可
 
-代码以 [MIT License](LICENSE) 开源。`01-course/courseware/` 与 `01-course/code/` 的课程材料
-版权归课程与授课教师所有，仅用于教学，详见 [NOTICE](NOTICE)。
+代码以 [MIT License](LICENSE) 开源。
