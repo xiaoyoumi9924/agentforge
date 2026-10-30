@@ -20,11 +20,11 @@ case "$(uname -s)" in
       echo "    irm ${RAW} | iex" >&2
       exit 1
     fi
-    tmp="$(mktemp --suffix=.ps1 2>/dev/null || mktemp)"
-    trap 'rm -f "$tmp"' EXIT
-    echo "下载安装器…"
-    curl -fsSL "$RAW" -o "$tmp"
-    powershell -NoProfile -ExecutionPolicy Bypass -File "$tmp"
+    echo "启动安装器…"
+    #  ★ 不能落盘再 `powershell -File`：install.ps1 存成 UTF-8 无 BOM（README 的
+    #    `irm ... | iex` 要求如此），-File 会让 PowerShell 5.1 按 ANSI 读中文而解析失败。
+    #    走 -Command + iex，字符串由 PowerShell 自己下载解析，编码才是对的。
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "iex (irm '$RAW')"
     ;;
   *)
     cat >&2 <<'EOF'

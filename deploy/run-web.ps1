@@ -1,4 +1,4 @@
-# ---------------------------------------------------------------------------
+﻿# ---------------------------------------------------------------------------
 #  run-web.ps1 —— 启动 AgentForge 的浏览器版
 #
 #  它做三件事：
@@ -40,7 +40,12 @@ if (-not $env:OPENAI_API_KEY) {
 }
 
 if (-not $env:OPENAI_API_KEY) {
-    Write-Host "[!] 没有 Key，先起服务也可以，但发消息会被拒绝。" -ForegroundColor Yellow
+    #  ★ 没 Key 也要把服务起起来：网页右上角「设置」里能填 Key，保存后下一条消息生效。
+    #    早期版本在这里只警告一句就往下走，而 agent.exe 拿不到 Key 会**直接退出**，
+    #    用户看到的现象是「终端一开就没了 / 网页打不开」。用一个占位 Key 先把服务撑住。
+    $env:OPENAI_API_KEY = 'sk-waiting-for-browser'
+    Write-Host "[!] 暂时没有 Key：先把网页开起来。" -ForegroundColor Yellow
+    Write-Host "    打开后点右上角「设置」填 API Key，保存后下一条消息生效。" -ForegroundColor Yellow
 }
 
 # ---- 2. 默认接 DeepSeek ---------------------------------------------------
@@ -58,7 +63,7 @@ Write-Host "模型:     $env:AF_MODEL  ($env:OPENAI_BASE_URL)" -ForegroundColor 
 Write-Host ""
 
 # ---- 4. 启动 --------------------------------------------------------------
-#  先在后台排一个「3 秒后打开浏览器」的任务，再启动服务本体。
+#  先在后台排一个「等端口通了就打开浏览器」的任务，再启动服务本体。
 #  为什么不在启动后打开：& $Exe --web 是阻塞调用，它返回时服务已经停了。
 $Port = 8080
 if ($env:AF_WEB_PORT -match '^\d+$') { $Port = [int]$env:AF_WEB_PORT }
@@ -66,10 +71,21 @@ $Url  = "http://127.0.0.1:$Port"
 
 Write-Host "启动中… 浏览器将自动打开 $Url" -ForegroundColor DarkGray
 $opener = Start-Job -ScriptBlock {
-    param($u)
-    Start-Sleep -Seconds 3
-    Start-Process $u
-} -ArgumentList $Url
+    param($u, $p)
+    #  ★ 等端口真的在听，再开浏览器。
+    #    写死"3 秒后打开"在慢机器上（ARM 模拟层、冷启动）会抢在服务前面，
+    #    浏览器只会显示一个"无法访问此页面"—— 看上去就像装坏了。
+    for ($i = 0; $i -lt 80; $i++) {
+        try {
+            $c = New-Object Net.Sockets.TcpClient
+            $c.Connect('127.0.0.1', $p)
+            $c.Close()
+            break
+        } catch { Start-Sleep -Milliseconds 250 }
+    }
+    try { Start-Process $u }
+    catch { Write-Host "  打不开浏览器，请手动访问 $u" -ForegroundColor Yellow }
+} -ArgumentList $Url, $Port
 
 try {
     & $Exe --web
