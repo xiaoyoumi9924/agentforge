@@ -1,23 +1,24 @@
-# AgentForge：Windows 原生的 AI 编程 Agent
+#  从零开始手写一个 AI Agent 
+
+用 C++20 一步步搭出一个能读代码、改代码、跑命令的 Windows Agent：包含详细教程和源代码；
+SSE 流式解析、工具注册表、上下文预算与压缩、六道安全闸门、Job Object 沙箱、仓库索引、
+会话持久化，最后接上 CLI、终端 UI、Qt 桌面端和浏览器界面。
 
 ![Platform](https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-0078d4)
 ![Language](https://img.shields.io/badge/C%2B%2B-20-00599c)
 ![License](https://img.shields.io/badge/license-MIT-3fb950)
-![Release](https://img.shields.io/badge/release-v1.0.0-8957e5)
 
-从 WinHTTP 发包一路搭到浏览器界面：一个纯 C++ 实现的 Agent 内核，覆盖 SSE 流式解析、工具注册表、
-上下文分层预算与压缩、六道安全闸门、Job Object 沙箱、仓库索引、会话持久化，
-以及 CLI、终端 UI、Qt 桌面端、WebSocket 浏览器端四套界面。不依赖 LangChain，不依赖 Python。
 
 ![浏览器端界面](03-text/08-web-ui/images/web-main.png)
 
-<sub>浏览器端（`agent.exe --web`）：左侧会话列表，中间任务流，每次工具调用渲染为一张卡片，展开可见参数、耗时与输出。</sub>
 
 ## 快速开始
 
+以下是一个完整的初级agent，现已实现web功能，更多功能有待开发~~~
+
 ### 第一步：安装
 
-Windows 10 / 11，无需管理员权限，不写注册表、不改 PATH。
+目前仅支持windows系统。
 
 **方式一：PowerShell**
 
@@ -25,61 +26,24 @@ Windows 10 / 11，无需管理员权限，不写注册表、不改 PATH。
 irm https://raw.githubusercontent.com/xiaoyoumi9924/agentforge/main/install.ps1 | iex
 ```
 
-**方式二：Git Bash / MSYS**
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/xiaoyoumi9924/agentforge/main/install.sh | bash
-```
-
-**方式三：手动下载** —— 到 [Releases 页面](../../releases/latest) 取 `AgentForge-Web-v1.0.0.zip`
-（1.2 MB），解压后双击 `run-web.bat`。装到 `%LOCALAPPDATA%\AgentForge`，卸载时删除该目录即可。
+**方式二：手动下载** —— 到 [Releases 页面](../../releases/latest) 取 `AgentForge-Web-v1.0.0.zip`
+，解压后双击 `run-web.bat`。
 
 ### 第二步：连接模型
 
 启动后自动打开浏览器并访问 `http://127.0.0.1:8080`，终端提示粘贴 API Key，
-默认对接 DeepSeek（`https://api.deepseek.com/v1`）。Key 经 Windows DPAPI 加密后存为 `key.dat`，
-仅当前 Windows 用户可解密，复制到其他账户无法使用。
+默认对接 DeepSeek。
 
-## 使用
 
-在输入框用自然语言描述任务，Agent 自行规划调用哪些工具：
 
-- 「读一下 `data.csv`，按产品汇总销售额，写到 `summary.md`」
-- 「新建 `hello.cpp`，打印 1 到 5，然后编译运行」
-
-写文件、执行命令前会弹窗确认，也可切换为「自动允许」；终端窗口是服务本体，关掉即停止。
-所有产出固定在安装目录的 `workspace/web/` 下，与启动位置无关。
 
 ## 项目结构
 
 ```
-.
-├── 01-course/                课程材料：12 讲课件与逐讲源码
-├── 02-agentforge/            完整工程（src / gui / plugins / tests / docs / scripts）
-├── 03-text/                  大作业：题目原文与第八题（Web 后端）实现
-├── deploy/                   安装与发布脚本
-├── docs/                     使用手册
-├── install.ps1 / install.sh  一键安装
-└── LICENSE                   MIT
+. ├── 01-course/ 课程原始材料：12 讲课件与逐讲源码 │ ├── courseware/ 前导 7 份 PDF + 主线 10 份 PDF + 4 份 PPTX │ ├── code/ 逐讲源码快照，L01 … L12 │ └── README.md 12 讲索引与版权说明 ├── 02-agentforge/ 完整工程（第 12 讲成品） │ ├── src/ 核心：传输、模型、循环、工具、沙箱、索引、会话 │ ├── gui/ Qt 6 桌面端 │ ├── plugins/ C ABI 插件示例 │ ├── tests/ mock 服务端、契约自检、端到端评测 │ ├── docs/ 13 份设计说明与评估报告 │ ├── configs/ 配置样例 │ ├── scripts/ build.ps1 / build_gui.ps1 / package.ps1 │ └── thirdparty/ 单头依赖（nlohmann/json） ├── 03-text/ 大作业 │ ├── 大作业-题目.pdf 题目原文（十道题） │ └── 08-web-ui/ 第八题：浏览器端实现 ├── deploy/ 安装与发布脚本 ├── docs/ 使用手册 ├── install.ps1 一键安装（PowerShell） ├── install.sh 一键安装（Git Bash） ├── LICENSE MIT └── README.md
 ```
 
-## 从源码构建
 
-需要 Visual Studio 2022（「使用 C++ 的桌面开发」工作负载，含 Windows SDK）；Qt 6.8 仅桌面端需要。
-
-```powershell
-cd 02-agentforge
-./scripts/build.ps1          # → build\agent.exe
-./scripts/build_gui.ps1      # → build_gui\AgentForgeGUI.exe（需 Qt）
-```
-
-`tests/mock_server.py` 是与 OpenAI 兼容的本地假服务端，不用 API Key 也能复现全部行为：
-
-```powershell
-python tests/mock_server.py &
-./build/agent.exe --selftest     # 115 项进程内自检
-./tests/evaluate.ps1             # 4/4 端到端用例
-```
 
 ## 文档
 
