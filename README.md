@@ -26,7 +26,13 @@
 irm https://raw.githubusercontent.com/xiaoyoumi9924/agentforge/main/install.ps1 | iex
 ```
 
-**方式二：手动下载** —— 到 [Releases 页面](../../releases/latest) 取 `AgentForge-Web-v1.0.0.zip`（1.2 MB），解压后双击 `run-web.bat`。
+<details>
+<summary><b>方式二：手动下载（备用）</b> —— 脚本不可用时走这条路</summary>
+
+到 [Releases 页面](../../releases/latest) 下载 `AgentForge-Web-v1.0.0.zip`（1.2 MB），
+解压到任意目录，双击 `run-web.bat` 即可运行，无需其他依赖。
+
+</details>
 
 ### 第二步：连接模型
 
