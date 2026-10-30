@@ -10,8 +10,6 @@
 
 ![浏览器端界面](03-text/08-web-ui/images/web-main.png)
 
-
-\n
 ## 快速开始
 
 目前是能用的完整版本：已完成网页端，其余功能继续迭代。
@@ -20,28 +18,23 @@
 
 目前仅支持 Windows 系统。
 
-
 ```powershell
 irm https://raw.githubusercontent.com/xiaoyoumi9924/agentforge/main/install.ps1 | iex
 ```
 
 <details>
-<summary><b>备用方法</summary>
+<summary><b>备用方法</b></summary>
 
 到 [Releases 页面](../../releases/latest) 下载 `AgentForge-Web-v1.0.0.zip`（1.2 MB），
 解压到任意目录，双击 `run-web.bat` 即可运行，无需其他依赖。
 
 </details>
 
-\n
-
 ### 第二步：连接模型
 
 启动后自动打开浏览器并访问 `http://127.0.0.1:8080`，终端提示粘贴 API Key，默认对接 DeepSeek。
 
 到这一步就装完了：一个只跑在本机的网页，你下指令，它读文件、改代码、跑命令。
-\n
-\n
 
 ## 项目结构
 
