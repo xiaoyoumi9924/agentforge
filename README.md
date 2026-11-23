@@ -1,91 +1,81 @@
-<div align="center">
+# 从零开始手写一个 AI Agent
 
-# 🤖 AgentForge
+![Platform](https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-0078d4)
+![Language](https://img.shields.io/badge/C%2B%2B-20-00599c)
+![License](https://img.shields.io/badge/license-MIT-3fb950)
 
-### 从零开始手写一个 Windows 原生 AI 编程 Agent  
-### Build a Windows-native AI coding agent from scratch
+用 C++20 一步步搭出一个能读代码、改代码、跑命令的 Windows Agent，包含详细教程和源代码。
+覆盖 SSE 流式解析、工具注册表、上下文预算与压缩、六道安全闸门、Job Object 沙箱、仓库索引、
+会话持久化，最后接上 CLI、终端 UI、Qt 桌面端和浏览器界面。
 
-<p>
-  <img src="https://img.shields.io/badge/C%2B%2B-20-00599C?style=flat-square&logo=cplusplus&logoColor=white" alt="C++20">
-  <img src="https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Windows">
-  <img src="https://img.shields.io/badge/License-MIT-3fb950?style=flat-square" alt="MIT License">
-  <img src="https://img.shields.io/github/stars/xiaoyoumi9924/agentforge?style=flat-square" alt="GitHub stars">
-</p>
+![浏览器端界面](03-text/08-web-ui/images/web-main.png)
 
-</div>
+## 快速开始
 
-用 C++20 一步步搭出一个能读代码、改代码、运行命令的 Windows Agent。项目同时包含教程课件与逐讲源码，适合学习 Agent 的基本工作流与工程实现。
+目前是能用的完整版本：已完成网页端，其余功能继续迭代。
 
-Build a Windows-native agent in C++20 that can inspect code, edit files, and run commands. The repository includes course materials and step-by-step source snapshots.
-
-![AgentForge browser interface](03-text/08-web-ui/images/web-main.png)
-
-## ✨ Features / 功能
-
-- **Streaming conversation / 流式对话：** SSE 流式解析与模型响应处理
-- **Tool system / 工具系统：** 工具注册、调用与自主执行循环
-- **Context management / 上下文管理：** 上下文预算与压缩
-- **Execution safety / 执行安全：** 多道安全检查与 Job Object 沙箱
-- **Repository understanding / 仓库理解：** 仓库索引与检索
-- **Multiple interfaces / 多种交互界面：** CLI、终端 UI、Qt 桌面端与浏览器界面（按当前实现进度使用）
-
-> **Status / 项目状态：** 当前 README 所述网页端已完成；其他界面与扩展能力仍在迭代。请以实际发布版本为准。
-
-## 🚀 Quick Start / 快速开始
-
-### One-line install / 一键安装
-
+### 第一步：安装
 ```powershell
 irm https://raw.githubusercontent.com/xiaoyoumi9924/agentforge/main/install.ps1 | iex
 ```
 
-启动后访问 `http://127.0.0.1:8080`。首次使用时，在页面中配置模型 API Key；默认对接 DeepSeek。
+<details>
+<summary><b>备用方法</b></summary>
 
-After installation, open `http://127.0.0.1:8080` and configure your model API key on first launch. DeepSeek is the default provider.
+到 [Releases 页面](../../releases/latest) 下载 `AgentForge-Web-v1.0.0.zip`（1.2 MB），
+解压到任意目录，双击 `run-web.bat` 即可运行，无需其他依赖。
 
-### Alternative / 备用方式
+</details>
 
-从 [Releases](../../releases/latest) 下载 `AgentForge-Web-v1.0.0.zip`，解压后运行 `run-web.bat`。
+### 第二步：连接模型
 
-Download the packaged release, extract it, and run `run-web.bat`.
+启动后自动打开浏览器并访问 `http://127.0.0.1:8080`，第一次会弹窗让你填 API Key（存在浏览器里，下次不用再填），默认对接 DeepSeek。
 
-## 🧱 Project Structure / 项目结构
+到这一步就装完了：一个只跑在本机的网页，你下指令，它读文件、改代码、跑命令。
 
-```text
+## 项目结构
+
+```
 .
-├── 01-course/            # Course materials and lesson source code
-├── 02-agentforge/        # Main application
-│   ├── src/              # Core implementation
-│   ├── gui/              # Qt 6 desktop UI
-│   └── tests/            # Tests and evaluation
-├── 03-text/              # Assignment implementations
-├── deploy/               # Installation and release scripts
-├── docs/                 # User documentation
-├── install.ps1
-├── install.sh
+├── 01-course/            12 讲课件与逐讲源码
+│   ├── courseware/       课件：前导 7 份 + 主线 12 讲
+│   └── code/             逐讲源码 L01 … L12
+├── 02-agentforge/        完整工程
+│   ├── src/              核心实现
+│   ├── gui/              Qt 6 桌面端
+│   └── tests/            自检与端到端评测
+├── 03-text/              大作业题目与实现
+├── deploy/               安装与发布脚本
+├── docs/                 使用手册
+├── install.ps1           一键安装（另有 install.sh）
+├── LICENSE               MIT
 └── README.md
 ```
 
-## 📚 Learning Path / 学习路线
+## 课程内容
 
-| Stage | Topics |
-|---|---|
-| Design | Requirements, architecture and module contracts |
-| Conversation | SSE streaming |
-| Actions | Tool calls, file editing and agent loop |
-| Safety | Guardrails, sandboxing and session persistence |
-| Understanding | Repository indexing and retrieval |
-| Interaction | Terminal and desktop interfaces |
-| Delivery | Evaluation and release |
+7 份前导课件阐述设计取舍，12 讲主线按能力递进：
 
-课程材料索引：[01-course/README.md](01-course/README.md)
+| 阶段 | 讲次 | 完成的能力 |
+| --- | --- | --- |
+| 设计 | L01–L02 | 需求与总体设计、模块接口契约 |
+| 对话 | L03 | SSE 流式回答 |
+| 行动 | L04–L05 | 工具调用、文件编辑、自主循环 |
+| 约束 | L06–L07 | 六道闸门、沙箱、会话持久化 |
+| 理解 | L08 | 仓库索引与检索 |
+| 交互 | L09 | 终端界面 |
+| 配置 | L10 | 配置文件与密钥管理 |
+| 扩展 | L11 | 子代理 |
+| 交付 | L12 | 评测与发布 |
 
-## 📖 Documentation / 文档
+每讲均附课件与对应源码快照，见 [课程材料索引](01-course/README.md)。
 
-- [使用手册 / User Guide](docs/使用手册.md)
-- [课程材料索引 / Course Index](01-course/README.md)
-- [Web 后端实现说明 / Web Implementation](03-text/08-web-ui/README.md)
+## 文档
 
-## 📄 License / 许可
+- [**使用手册**](docs/使用手册.md) —— 安装细节、界面操作、任务写法、全部配置项、命令行参数、故障排查
+- [课程材料索引](01-course/README.md) —— 前导课程与主线 12 讲课件、逐讲源码
+- [Web 后端实现说明](03-text/08-web-ui/README.md) —— 第八题的设计与验证记录
 
-[MIT License](LICENSE)
+## 许可
+
+代码以 [MIT License](LICENSE) 开源。
